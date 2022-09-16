@@ -46,6 +46,8 @@ function createSliders() {
 }
 function createButtons(){
   screenshot=createButton("Screenshot!");
+  let divButton=document.getElementById('#button');
+  screenshot.parent(divButton);
   screenshot.mousePressed(takeScreenshot);
 }
 

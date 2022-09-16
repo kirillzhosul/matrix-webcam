@@ -44,6 +44,10 @@ function createSliders() {
     thresholdSlider.value(2);
   });
 }
+function createButtons(){
+  screenshot=createButton("Screenshot!");
+  screenshot.mousePressed(takeScreenshot);
+}
 
 function videoGetPixel(index) {
   // Returns pixel (RGB) from video stream by index.
@@ -60,8 +64,9 @@ function getBrightnessFromRGB(r, g, b) {
 
 function setup() {
   // Init.
-  createCanvas(w, h);
+  c= createCanvas(w, h);
   createSliders();
+  createButtons();
   loadVideo();
 }
 
@@ -115,5 +120,6 @@ function keyPressed() {
 }
 
 function takeScreenshot(){
-  screenshot = video.get();
+  saveCanvas(c, 'myScreenshot', 'jpg');
+  //save(screenshot, 'myScreenshot.png');
 }

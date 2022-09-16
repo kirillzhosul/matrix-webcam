@@ -1,8 +1,13 @@
 html,
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 5px;
+  /*font-family: 'Courier New', monospace; */
+}
+h1, h2, h3, h4, h5, h6, span {
+  font-family: 'Trebuchet MS', sans-serif;
 }
 canvas {
   display: block;
+  outline: black 1px solid;
 }

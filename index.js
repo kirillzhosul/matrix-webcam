@@ -5,6 +5,7 @@ let video;
 let gridSizeSlider;
 let backgroundDarknessSlider;
 let thresholdSlider;
+let textSizeSlider;
 
 // Sizes.
 const w = 640;
@@ -23,9 +24,24 @@ function loadVideo() {
 
 function createSliders() {
   // Creates all required sliders.
+
+  createSpan("<h3>Settings</h3>");
+  createSpan("Grid size: ");
   gridSizeSlider = createSlider(7, 25, 25);
+  createSpan("(7 - 25) <br>Text size: ");
+  textSizeSlider = createSlider(6, 32, 12);
+  createSpan("(6 - 32) <br>Darkness: ");
   backgroundDarknessSlider = createSlider(1, 255, 255);
+  createSpan("(1 - 255) <br>Threshold: ");
   thresholdSlider = createSlider(1, 8, 2);
+  createSpan("(1 - 8)<br>");
+  let resetButton = createButton("Reset");
+  resetButton.mouseClicked(() => {
+    gridSizeSlider.value(25);
+    textSizeSlider.value(12);
+    backgroundDarknessSlider.value(255);
+    thresholdSlider.value(2);
+  });
 }
 
 function videoGetPixel(index) {
@@ -52,6 +68,7 @@ function draw() {
   // Clear background.
   background(255);
   noStroke();
+  textSize(textSizeSlider.value());
 
   // Load stream.
   video.loadPixels();

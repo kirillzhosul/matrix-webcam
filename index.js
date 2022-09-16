@@ -1,5 +1,6 @@
 // Webcamera stream.
 let video;
+let screenshot;
 
 // Sliders.
 let gridSizeSlider;
@@ -43,6 +44,12 @@ function createSliders() {
     thresholdSlider.value(2);
   });
 }
+function createButtons(){
+  screenshot=createButton("Screenshot!");
+  let divButton=document.getElementById('#button');
+  screenshot.parent(divButton);
+  screenshot.mousePressed(takeScreenshot);
+}
 
 function videoGetPixel(index) {
   // Returns pixel (RGB) from video stream by index.
@@ -59,8 +66,9 @@ function getBrightnessFromRGB(r, g, b) {
 
 function setup() {
   // Init.
-  createCanvas(w, h);
+  c= createCanvas(w, h);
   createSliders();
+  createButtons();
   loadVideo();
 }
 
@@ -103,4 +111,17 @@ function draw() {
       text(char, x, y);
     }
   }
+}
+
+function keyPressed() {
+  if (keyCode === 32) {
+    takeScreenshot();
+    return false;
+  }    
+  return true;
+}
+
+function takeScreenshot(){
+  saveCanvas(c, 'myScreenshot', 'jpg');
+  //save(screenshot, 'myScreenshot.png');
 }

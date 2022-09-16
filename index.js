@@ -1,6 +1,10 @@
-// Webcamera stream.
+/// Matrix Webcam.
+
+// Webcam stream.
 let video;
-let screenshot;
+
+// Root canvas for the processed video.
+let canvas;
 
 // Sliders.
 let gridSizeSlider;
@@ -23,9 +27,10 @@ function loadVideo() {
   video.hide();
 }
 
-function createSliders() {
-  // Creates all required sliders.
+function createUI() {
+  // Creates all required sliders and buttons with texts.
 
+  // Sliders.
   createSpan("<h3>Settings</h3>");
   createSpan("Grid size: ");
   gridSizeSlider = createSlider(7, 25, 25);
@@ -36,19 +41,21 @@ function createSliders() {
   createSpan("(1 - 255) <br>Threshold: ");
   thresholdSlider = createSlider(1, 8, 2);
   createSpan("(1 - 8)<br>");
-  let resetButton = createButton("Reset");
+
+  // Buttons.
+  createSpan("<br/>");
+  let resetButton = createButton("Reset settings");
   resetButton.mouseClicked(() => {
     gridSizeSlider.value(25);
     textSizeSlider.value(12);
     backgroundDarknessSlider.value(255);
     thresholdSlider.value(2);
   });
-}
-function createButtons(){
-  screenshot=createButton("Screenshot!");
-  let divButton=document.getElementById('#button');
-  screenshot.parent(divButton);
-  screenshot.mousePressed(takeScreenshot);
+  createSpan("&nbsp;");
+  let screenshotButton = createButton(
+    "Take screenshot (or press <strong>Space</strong>)"
+  );
+  screenshotButton.mouseClicked(takeScreenshot);
 }
 
 function videoGetPixel(index) {
@@ -66,9 +73,8 @@ function getBrightnessFromRGB(r, g, b) {
 
 function setup() {
   // Init.
-  c= createCanvas(w, h);
-  createSliders();
-  createButtons();
+  canvas = createCanvas(w, h);
+  createUI();
   loadVideo();
 }
 
@@ -114,14 +120,15 @@ function draw() {
 }
 
 function keyPressed() {
+  // Checking keyboard.
+
   if (keyCode === 32) {
+    // Space bar.
     takeScreenshot();
-    return false;
-  }    
-  return true;
+  }
 }
 
-function takeScreenshot(){
-  saveCanvas(c, 'myScreenshot', 'jpg');
-  //save(screenshot, 'myScreenshot.png');
+function takeScreenshot() {
+  // Save canvas as image and gives it to the user browser (Download).
+  saveCanvas(canvas, "matrix-webcam", "jpg");
 }

@@ -1,5 +1,6 @@
 // Webcamera stream.
 let video;
+let screenshot;
 
 // Sliders.
 let gridSizeSlider;
@@ -103,4 +104,16 @@ function draw() {
       text(char, x, y);
     }
   }
+}
+
+function keyPressed() {
+  if (keyCode === 32) {
+    takeScreenshot();
+    return false;
+  }    
+  return true;
+}
+
+function takeScreenshot(){
+  screenshot = video.get();
 }

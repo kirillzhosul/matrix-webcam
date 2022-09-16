@@ -12,6 +12,9 @@ let backgroundDarknessSlider;
 let thresholdSlider;
 let textSizeSlider;
 
+// Settings.
+let isPaused = false;
+
 // Sizes.
 const w = 640;
 const h = 480;
@@ -29,9 +32,9 @@ function loadVideo() {
 
 function createUI() {
   // Creates all required sliders and buttons with texts.
+  createSpan("<h3>Settings</h3>");
 
   // Sliders.
-  createSpan("<h3>Settings</h3>");
   createSpan("Grid size: ");
   gridSizeSlider = createSlider(7, 25, 25);
   createSpan("(7 - 25) <br>Text size: ");
@@ -41,6 +44,9 @@ function createUI() {
   createSpan("(1 - 255) <br>Threshold: ");
   thresholdSlider = createSlider(1, 8, 2);
   createSpan("(1 - 8)<br>");
+
+  pauseCheckbox = createCheckbox("Pause", false);
+  pauseCheckbox.changed(switchPause);
 
   // Buttons.
   createSpan("<br/>");
@@ -79,11 +85,17 @@ function setup() {
 }
 
 function draw() {
+  if (isPaused) return;
+
   // Clear background.
   background(255);
   noStroke();
-  textSize(textSizeSlider.value());
 
+  drawProcessedVideo();
+}
+
+function drawProcessedVideo() {
+  // Draws and processes video to the canvas.
   // Load stream.
   video.loadPixels();
 
@@ -91,6 +103,8 @@ function draw() {
   let gridSize = gridSizeSlider.value();
   let backgroundDarkness = backgroundDarknessSlider.value();
   let threshold = thresholdSlider.value();
+  textSize(textSizeSlider.value());
+
   for (let y = 0; y < video.height; y += gridSize) {
     for (let x = 0; x < video.width; x += gridSize) {
       // Iterate over video pixels.
@@ -118,17 +132,25 @@ function draw() {
     }
   }
 }
-
 function keyPressed() {
   // Checking keyboard.
 
   if (keyCode === 32) {
     // Space bar.
-    takeScreenshot();
+    return takeScreenshot();
+  }
+  if (keyCode === 17) {
+    // Control.
+    // Not implemented yet!
+    //return switchPause();
   }
 }
 
 function takeScreenshot() {
   // Save canvas as image and gives it to the user browser (Download).
   saveCanvas(canvas, "matrix-webcam", "jpg");
+}
+
+function switchPause() {
+  isPaused = !isPaused;
 }
